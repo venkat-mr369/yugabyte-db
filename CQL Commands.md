@@ -28,7 +28,7 @@ INSERT INTO employees (id, name, age, city) VALUES (3, 'Rohan', 22, 'Mumbai');
 
 ***
 
-# Useful Cassandra CQL Meta-Commands with Examples
+#### Useful Cassandra CQL Meta-Commands with Examples
 
 | Command                       | Description                                | Example                                                       |
 |-------------------------------|--------------------------------------------|---------------------------------------------------------------|
