@@ -40,4 +40,50 @@ Here is an extended list of **20+ useful psql (PostgreSQL CLI) meta-commands**, 
 
 ***
 
-These meta-commands help manage databases, explore objects, script automation, format output, and edit queries efficiently from the psql command line in YugabyteDB.
+Here is a comprehensive list of more than 30 useful **PSQL (PostgreSQL CLI) meta-commands** that can be used while interacting with YugabyteDB's YSQL shell or standard PostgreSQL CLI:
+
+***
+
+## Useful PSQL (CLI) Meta-Commands
+
+| Command        | Description                                       |
+|----------------|-------------------------------------------------|
+| `\?`           | Show all psql commands and help                  |
+| `\q`           | Quit/exit the psql shell                          |
+| `\c [dbname]`  | Connect to a new database (or `\connect`)        |
+| `\d`           | List tables, views, and sequences                 |
+| `\dt`          | List tables                                       |
+| `\di`          | List indexes                                      |
+| `\ds`          | List sequences                                    |
+| `\dv`          | List views                                       |
+| `\df`          | List functions                                    |
+| `\du`          | List roles/users                                  |
+| `\l` or `\list`| List all databases                               |
+| `\x`           | Toggle expanded display for query results         |
+| `\timing`      | Toggle query timing on/off                         |
+| `\set`         | Set or show psql variables                         |
+| `\g`           | Execute the current query buffer                   |
+| `\p`           | Show the current query buffer                       |
+| `\r`           | Reset (clear) the query buffer                      |
+| `\ef [func]`   | Edit a function using the default editor           |
+| `\copy`        | Perform SQL COPY to/from a file                     |
+| `\h [command]` | Show help on SQL commands (e.g., `\h SELECT`)      |
+| `\watch [sec]` | Re-execute query every specified seconds            |
+| `\o [file]`    | Send query output to a file (or stdout if empty)    |
+| `\i [file]`    | Execute commands from a file                         |
+| `\! [cmd]`     | Execute a shell command                              |
+| `\setenv`      | Set or show environment variables                   |
+| `\cd [dir]`    | Change the working directory                         |
+| `\encoding`    | Show or set client encoding                           |
+| `\a`           | Toggle output between aligned and unaligned format  |
+| `\H`           | Toggle HTML output mode                               |
+| `\x auto`      | Auto toggle expanded format based on output size     |
+| `\ef [function name]` | Open function definition in editor                  |
+| `\ddp`         | List default privileges                              |
+| `\z`           | Show access privileges on tables (same as `\dp`)    |
+| `\dp`          | Show access privileges on tables and columns         |
+| `\wait`        | Wait for asynchronous query completion                 |
+
+***
+
+
