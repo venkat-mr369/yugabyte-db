@@ -1,17 +1,14 @@
-Perfect 👌 You are right — if we follow the **official Yugabyte tutorial** ([link](https://docs.yugabyte.com/preview/tutorials/)), everything is shown as `yugabyte` user, not as `root`.
-Best practice in production: **Do not install Yugabyte as root**. Instead:
+Yes 👍 your steps are **almost correct**, but let me verify carefully and update for **3 nodes only (10.166.0.3, 10.166.0.4, 10.166.0.5)** with proper Linux user setup, installation, systemd, and verification.
 
-* Create a dedicated Linux user (e.g., `yugabyte`).
-* Give it `sudo` rights (so it can manage services and directories).
-* Do installation and cluster setup from this user.
-
-Let me **rework your 4-node cluster setup completely from scratch** step by step.
+Here’s the **clean reworked version**:
 
 ---
 
-# 🛠️ Step 1: Create Yugabyte User on All Nodes
+# 🚀 YugabyteDB 3-Node Cluster Setup (Oracle Linux / RHEL)
 
-Login as `root` on each server (`10.166.0.3–6`) and run:
+## 🛠️ Step 1: Create `yugabyte` User
+
+Login as `root` on **each server** (`10.166.0.3–5`):
 
 ```bash
 # Create yugabyte user
@@ -21,23 +18,23 @@ useradd -m -s /bin/bash yugabyte
 passwd yugabyte
 
 # Give sudo privileges
-usermod -aG wheel yugabyte   # (On RHEL/Oracle Linux)
+usermod -aG wheel yugabyte   # (For RHEL / Oracle Linux)
 # or
-usermod -aG sudo yugabyte    # (On Ubuntu/Debian)
+usermod -aG sudo yugabyte    # (For Ubuntu / Debian)
 ```
 
-Verify:
+✅ Verify:
 
 ```bash
 su - yugabyte
-whoami   # should return yugabyte
+whoami   # should return "yugabyte"
 ```
 
 ---
 
-# 🛠️ Step 2: Install Dependencies
+## 🛠️ Step 2: Install Dependencies
 
-As `root` on all nodes:
+As `root` on all 3 nodes:
 
 ```bash
 yum install -y wget tar curl net-tools
@@ -45,18 +42,19 @@ yum install -y wget tar curl net-tools
 
 ---
 
-# 🛠️ Step 3: Download YugabyteDB as `yugabyte` User
+## 🛠️ Step 3: Download YugabyteDB (as yugabyte user)
 
 On each server:
 
 ```bash
 su - yugabyte
+
 wget https://downloads.yugabyte.com/releases/2025.1.0.1/yugabyte-2025.1.0.1-linux.tar.gz
 tar xvf yugabyte-2025.1.0.1-linux.tar.gz
 cd yugabyte-2025.1.0.1
 ```
 
-Add to PATH (append to `~/.bashrc`):
+Add to PATH:
 
 ```bash
 echo 'export PATH=$HOME/yugabyte-2025.1.0.1/bin:$PATH' >> ~/.bashrc
@@ -65,94 +63,126 @@ source ~/.bashrc
 
 ---
 
-# 🛠️ Step 4: Start YB-Master on 3 Nodes
+## ⚙️ Step 4: Create Data Directories
 
-Run as `yugabyte` user:
-
-On **10.166.0.3**:
+On **all 3 servers**:
 
 ```bash
-./bin/yb-master \
+mkdir -p /home/yugabyte/yugabyte-data/master
+mkdir -p /home/yugabyte/yugabyte-data/tserver
+```
+
+---
+
+## ⚙️ Step 5: Systemd Unit Files
+
+As **root**, create the following on **all 3 servers**:
+
+---
+
+### 📌 `/etc/systemd/system/yb-master.service`
+
+```ini
+[Unit]
+Description=YugabyteDB Master
+After=network.target
+
+[Service]
+User=yugabyte
+LimitNOFILE=1048576
+ExecStart=/home/yugabyte/yugabyte-2025.1.0.1/bin/yb-master \
   --master_addresses=10.166.0.3:7100,10.166.0.4:7100,10.166.0.5:7100 \
-  --rpc_bind_addresses=10.166.0.3:7100 \
-  --webserver_interface=10.166.0.3 \
-  --fs_data_dirs=/home/yugabyte/yugabyte-data/master \
-  > ~/master.out 2>&1 &
-```
+  --rpc_bind_addresses=%H:7100 \
+  --webserver_interface=%H \
+  --fs_data_dirs=/home/yugabyte/yugabyte-data/master
+Restart=always
+RestartSec=10
 
-Do the same on **10.166.0.4** and **10.166.0.5** (just replace IPs).
+[Install]
+WantedBy=multi-user.target
+```
 
 ---
 
-# 🛠️ Step 5: Start YB-TServer on All 4 Nodes
+### 📌 `/etc/systemd/system/yb-tserver.service`
 
-On **10.166.0.3**:
+```ini
+[Unit]
+Description=YugabyteDB TServer
+After=network.target
 
-```bash
-./bin/yb-tserver \
+[Service]
+User=yugabyte
+LimitNOFILE=1048576
+ExecStart=/home/yugabyte/yugabyte-2025.1.0.1/bin/yb-tserver \
   --tserver_master_addrs=10.166.0.3:7100,10.166.0.4:7100,10.166.0.5:7100 \
-  --rpc_bind_addresses=10.166.0.3:9100 \
-  --cql_proxy_bind_address=10.166.0.3:9042 \
-  --pgsql_proxy_bind_address=10.166.0.3:5433 \
-  --redis_proxy_bind_address=10.166.0.3:6379 \
-  --webserver_interface=10.166.0.3 \
-  --fs_data_dirs=/home/yugabyte/yugabyte-data/tserver \
-  > ~/tserver.out 2>&1 &
-```
+  --rpc_bind_addresses=%H:9100 \
+  --cql_proxy_bind_address=%H:9042 \
+  --pgsql_proxy_bind_address=%H:5433 \
+  --redis_proxy_bind_address=%H:6379 \
+  --webserver_interface=%H \
+  --fs_data_dirs=/home/yugabyte/yugabyte-data/tserver
+Restart=always
+RestartSec=10
 
-Repeat on **10.166.0.4, 10.166.0.5, 10.166.0.6** with their respective IPs.
+[Install]
+WantedBy=multi-user.target
+```
 
 ---
 
-# 🛠️ Step 6: Verify Cluster
+## ⚙️ Step 6: Start & Enable Services
 
-From **any node** (as `yugabyte`):
+On **each node** (`root`):
 
 ```bash
-./bin/yb-admin --master_addresses 10.166.0.3:7100,10.166.0.4:7100,10.166.0.5:7100 list_all_masters
-./bin/yb-admin --master_addresses 10.166.0.3:7100,10.166.0.4:7100,10.166.0.5:7100 list_all_tablet_servers
+systemctl daemon-reload
+systemctl enable yb-master
+systemctl enable yb-tserver
+
+systemctl start yb-master
+systemctl start yb-tserver
 ```
 
-Expected:
+---
 
-* 3 Masters (1 leader, 2 followers)
-* 4 Tablet Servers
+## ⚙️ Step 7: Verify Cluster
 
-Check UIs:
+### Service check
 
-* Master UI → `http://10.166.0.3:7000`
-* TServer UI → `http://10.166.0.3:9000`
+```bash
+systemctl status yb-master
+systemctl status yb-tserver
+```
+
+### Cluster verification (run on any node as `yugabyte`):
+
+```bash
+yb-admin \
+  --master_addresses 10.166.0.3:7100,10.166.0.4:7100,10.166.0.5:7100 list_all_masters
+
+yb-admin \
+  --master_addresses 10.166.0.3:7100,10.166.0.4:7100,10.166.0.5:7100 list_all_tablet_servers
+```
 
 ---
 
-# 🛠️ Step 7: Connect Clients
+## ⚙️ Step 8: Web Interfaces
 
-* **Postgres API (YSQL)**:
-
-  ```bash
-  ysqlsh -h 10.166.0.3 -p 5433
-  ```
-* **Cassandra API (YCQL)**:
-
-  ```bash
-  ycqlsh 10.166.0.3 9042
-  ```
-* **Redis API (YEDIS)**:
-
-  ```bash
-  redis-cli -h 10.166.0.3 -p 6379
-  ```
+* Master UI → `http://<ip>:7000`
+* TServer UI → `http://<ip>:9000`
 
 ---
 
-## ✅ Final Layout (with yugabyte user)
+# ✅ Final Layout (3-Node Cluster)
 
-| Node (IP)  | Role(s)          | Ports Used                               |
+| Node (IP)  | Roles            | Ports Used                               |
 | ---------- | ---------------- | ---------------------------------------- |
 | 10.166.0.3 | Master + TServer | 7100, 7000, 9100, 9000, 5433, 9042, 6379 |
 | 10.166.0.4 | Master + TServer | 7100, 7000, 9100, 9000, 5433, 9042, 6379 |
 | 10.166.0.5 | Master + TServer | 7100, 7000, 9100, 9000, 5433, 9042, 6379 |
-| 10.166.0.6 | TServer only     | 9100, 9000, 5433, 9042, 6379             |
 
 ---
 
+👉 This is now **cleaned up for only 3 nodes**.
+Would you like me to also prepare a **step-by-step shell script** (`setup_yugabyte.sh`) so you can just run it on each server instead of copy-pasting?
