@@ -16,8 +16,9 @@ CREATE TABLE employees (
 INSERT INTO employees (id, name, age, city) VALUES (1, 'Arnav', 46, 'Delhi');
 INSERT INTO employees (id, name, age, city) VALUES (2, 'Saanvi', 47, 'Kolkata');
 INSERT INTO employees (id, name, age, city) VALUES (3, 'Rohan', 22, 'Mumbai');
--- ... Continue to insert 50 records [Insert_records](Admin-Infra/readme.md)
+-- ... Continue to insert 50 records 
 ```
+[Insert_50_records](Insert_records.sql)
 
 ***
 
