@@ -4,7 +4,7 @@
 
 ***
 
-## 🔑 Universe Basic Information  
+## 🔑 Basic Information  
 | **Property**          | **Value**                                                                 |
 |------------------------|---------------------------------------------------------------------------|
 | **Universe UUID**     | `5d77ee8d-8981-4a58-8f62-f2df0f3c805a`                                     |
