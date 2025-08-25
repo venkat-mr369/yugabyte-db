@@ -25,6 +25,7 @@ INSERT INTO employees (id, name, age, city) VALUES (2, 'Saanvi', 47, 'Kolkata');
 INSERT INTO employees (id, name, age, city) VALUES (3, 'Rohan', 22, 'Mumbai');
 -- ... continue till 50 records
 ```
+[Insert Records](insert_cql_records.sql)
 
 ***
 
