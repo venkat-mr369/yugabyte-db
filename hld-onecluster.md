@@ -1,108 +1,141 @@
+***
 
-## 📌 High-Level Overview
-You have created a **YugabyteDB Universe (cluster)**. A "universe" in YugabyteDB terms is one full deployment of the database (could be single node or multi-node).  
-
-Right now, your universe is **very small**:
-- 1 node  
-- 2 virtual CPUs (vCPUs)  
-- ~2.36 GB RAM  
-- ~20 GB disk  
-
-So it's basically a **tiny, test-sized single-node cluster**.
+# 📋 Full Universe Setup (http://35.228.142.172:15433)  
 
 ***
 
-## 🔑 Universe Basic Information
-- **Universe UUID:** `5d77ee8d-8981-4a58-8f62-f2df0f3c805a`  
-   → Unique ID for this universe. Think of it like a fingerprint.  
-- **Database version:** `v2025.1.0.1`  
-   → The version of YugabyteDB you’re running.  
-- **Date Created:** 8/25/2025, 12:30  
-   → When this universe was made.  
-- **Encryption:** None  
-   → No at-rest or in-transit encryption has been enabled.  
-- **Authentication:** None  
-   → Anyone with network access can connect (not secure yet).  
-- **Fault Tolerance:** None  
-   → Since replication factor = 1, no failover possible. If this node is down, the database is unavailable.  
-- **Replication Factor:** 1  
-   → Each piece of data is stored only once. No copies are kept.  
-- **Total Nodes:** 1  
-   → Only one machine runs this database.  
+## 🔑 Universe Basic Information  
+| **Property**          | **Value**                                                                 |
+|------------------------|---------------------------------------------------------------------------|
+| **Universe UUID**     | `5d77ee8d-8981-4a58-8f62-f2df0f3c805a`                                     |
+| **Database Version**  | `v2025.1.0.1`                                                             |
+| **Date Created**      | `August 25, 2025, 12:30 PM`                                               |
+| **Encryption**        | **None**                                                                  |
+| **Authentication**    | **None**                                                                  |
+| **Fault Tolerance**   | **None**                                                                  |
+| **Replication Factor**| `1`                                                                       |
+| **Total Nodes**       | 1                                                                         |
+| **Total vCPU**        | 2                                                                         |
+| **Total Memory**      | 2.36 GB                                                                   |
+| **Total Disk Size**   | 19.74 GB                                                                  |
 
 ***
 
-## 🔧 Primary Cluster Details
-- **Total Nodes:** 1  
-- **Total Resources:**  
-  - 2 vCPUs  
-  - 2.36 GB Memory  
-  - ~20 GB Disk  
-
-Meaning your whole setup lives inside just **one small server**.
-
-***
-
-## 🌎 Placement Info
-Placement is how Yugabyte identifies where nodes live (cloud, region, availability zone).
-
-- **Cloud name:** `cloud1` (you named it)  
-- **Region:** `datacenter1`  
-- **Zone:** `rack1`  
-
-Since only 1 node exists, everything is in the same "datacenter + rack."
+## 🖥️ Primary Cluster Information  
+| **Property**       | **Value**                                                                 |
+|---------------------|---------------------------------------------------------------------------|
+| **Cluster Type**   | Primary Cluster                                                            |
+| **Total Nodes**    | 1                                                                          |
+| **Total vCPU**     | 2                                                                          |
+| **Total Memory**   | 2.36 GB                                                                    |
+| **Total Disk Size**| 19.74 GB                                                                   |
 
 ***
 
-## ⚙️ G-Flags (Configuration Settings)
-
-These are advanced database configuration settings. Each is split between `Master` (cluster-wide metadata) and `TServer` (tablet/SQL server, where data lives).
-
-### Key Settings in Plain English
-1. **log_filename** → Master logs to `yb-master`, TServer to `yb-tserver`.  
-2. **rpc_bind_addresses** → The IPs and ports for internal communication:  
-   - Master: `10.166.0.2:7100`  
-   - TServer: `10.166.0.2:9100`  
-3. **Webservers (for monitoring UI)**  
-   - Master UI on `10.166.0.2:7000`  
-   - TServer UI on `10.166.0.2:9000`  
-4. **fs_data_dirs** → Where data is stored: `/root/var/data`  
-5. **replication_factor = 1** → No replicas of data, just single copies.  
-6. **Broadcast Addresses** → IPs exposed externally:  
-   - Master: `10.166.0.2:7100`  
-   - TServer: `10.166.0.2:9100`  
-7. **Memory Settings**  
-   - Small memory release and cache limits tuned for a small system.  
-8. **Sharding**  
-   - Each TServer has **1 shard** (yb_num_shards_per_tserver = 1).  
-   - Keeps things simple since only one node exists.  
-9. **Connection Ports**  
-   - YCQL (Cassandra API): `10.166.0.2:9042`  
-   - YSQL (Postgres API): `10.166.0.2:5433`  
-   - Redis API: `10.166.0.2:6379`  
+## 🌎 Placement Information  
+| **Level**       | **Value**        |
+|-----------------|------------------|
+| **Cloud**      | `cloud1`         |
+| **Region**     | `datacenter1`    |
+| **Zone**       | `rack1`          |
 
 ***
 
-## 🔍 What This Means in Practice
-- You have a **single-node YugabyteDB install** that can be accessed via:
-  - PostgreSQL-compatible SQL → `5433`  
-  - Cassandra-compatible CQL → `9042`  
-  - Redis-compatible → `6379`  
-- It’s **not production-ready**:
-  - **No replication** → failure = downtime.  
-  - **No encryption or authentication** → anyone in network can access.  
-  - **Tiny resources** → good for dev/testing only.  
+## 🖧 Node Information (datacenter1 / rack1)  
+| **Node Count** | **vCPU / Node** | **RAM / Node** | **Disk / Node** |
+|-----------------|-----------------|----------------|-----------------|
+| 1              | 2 vCPU          | 2.36 GB        | 19.74 GB        |
 
 ***
 
-## ✅ Summary in Very Simple Terms
-You currently have:
-- A **test YugabyteDB cluster** with only 1 server.  
-- It runs **all APIs (Postgres, Cassandra, Redis)** but stores only **1 copy of data**.  
-- It's **not fault-tolerant** (if the server fails, data is lost).  
-- It's **not secured** (no authentication/encryption).  
-- Useful for **local development or learning**, not for real-world production usage.  
+## 🌐 Network & Ports  
+| **Type**             | **Address**            | **Purpose**                       |
+|-----------------------|------------------------|-----------------------------------|
+| **RPC (Master)**      | `10.166.0.2:7100`     | Master internal communication      |
+| **RPC (TServer)**     | `10.166.0.2:9100`     | TServer internal communication     |
+| **Master Web UI**     | `http://10.166.0.2:7000` | Master Admin Dashboard          |
+| **TServer Web UI**    | `http://10.166.0.2:9000` | TServer Admin Dashboard         |
+| **YCQL Port**         | `10.166.0.2:9042`     | Cassandra-compatible API           |
+| **YSQL Port**         | `10.166.0.2:5433`     | PostgreSQL-compatible API          |
+| **Redis Port**        | `10.166.0.2:6379`     | Redis-compatible API               |
 
 ***
 
-👉 Would you like me to also explain **how you can scale this (add nodes, enable replication, and make it production-ready)**?
+## ⚙️ Custom & System Flags  
+
+### Master Flags  
+| **Flag**                             | **Value**                       |
+|---------------------------------------|---------------------------------|
+| log_filename                          | yb-master                       |
+| placement_cloud                       | cloud1                          |
+| placement_region                      | datacenter1                     |
+| placement_zone                        | rack1                           |
+| rpc_bind_addresses                    | 10.166.0.2:7100                 |
+| webserver_interface                   | 10.166.0.2                      |
+| webserver_port                        | 7000                            |
+| cluster_uuid                          | 8df8279d-4cf1-4adc-9636-dad9394eb380 |
+| enforce_tablet_replica_limits         | true                            |
+| fs_data_dirs                          | /root/var/data                  |
+| instance_uuid_override                | 3e0314807db2491a8c9d6ab5c6916da3|
+| master_addresses                      | 10.166.0.2:7100                 |
+| master_enable_metrics_snapshotter     | true                            |
+| mem_tracker_tcmalloc_gc_release_bytes | 7785930                         |
+| metrics_snapshotter_tserver_metrics_whitelist | handler_latency_yb_tserver..., cpu_usage, disk_usage, node_up |
+| replication_factor                    | 1                               |
+| server_broadcast_addresses            | 10.166.0.2:7100                 |
+| server_dump_info_path                 | /root/var/data/master-info      |
+| server_tcmalloc_max_total_thread_cache_bytes | 33554432               |
+| split_respects_tablet_replica_limits  | true                            |
+| stop_on_parent_termination            | true                            |
+| undefok                               | stop_on_parent_termination       |
+| use_memory_defaults_optimized_for_ysql| true                            |
+| yb_num_shards_per_tserver             | 1                               |
+| ysql_num_shards_per_tserver           | 1                               |
+
+***
+
+### TServer Flags  
+| **Flag**                             | **Value**                       |
+|---------------------------------------|---------------------------------|
+| log_filename                          | yb-tserver                      |
+| placement_cloud                       | cloud1                          |
+| placement_region                      | datacenter1                     |
+| placement_zone                        | rack1                           |
+| rpc_bind_addresses                    | 10.166.0.2:9100                 |
+| webserver_interface                   | 10.166.0.2                      |
+| webserver_port                        | 9000                            |
+| enforce_tablet_replica_limits         | -                               |
+| fs_data_dirs                          | /root/var/data                  |
+| instance_uuid_override                | 0b88f94a685f49d393a3b1284dd14152|
+| mem_tracker_tcmalloc_gc_release_bytes | 17518344                        |
+| metrics_snapshotter_tserver_metrics_whitelist | handler_latency_yb_tserver..., cpu_usage, disk_usage, node_up |
+| server_broadcast_addresses            | 10.166.0.2:9100                 |
+| server_dump_info_path                 | /root/var/data/tserver-info     |
+| server_tcmalloc_max_total_thread_cache_bytes | 43795860               |
+| split_respects_tablet_replica_limits  | -                               |
+| stop_on_parent_termination            | true                            |
+| undefok                               | stop_on_parent_termination       |
+| use_memory_defaults_optimized_for_ysql| true                            |
+| yb_num_shards_per_tserver             | 1                               |
+| ysql_num_shards_per_tserver           | 1                               |
+| cql_proxy_bind_address                | 10.166.0.2:9042                 |
+| enable_ysql_conn_mgr_stats            | false                           |
+| metrics_snapshotter_interval_ms       | 11000                           |
+| pgsql_proxy_bind_address              | 10.166.0.2:5433                 |
+| placement_uuid                        | aa124615-6f2a-439e-bf32-4414d2d4557b |
+| redis_proxy_bind_address              | 10.166.0.2:6379                 |
+| start_pgsql_proxy                     | true                            |
+| tserver_enable_metrics_snapshotter    | true                            |
+| tserver_master_addrs                  | 10.166.0.2:7100                 |
+
+***
+
+# ✅ Final Summary
+- **Universe = 1 node, 2 vCPU, 2.36 GB RAM, 20 GB disk**  
+- **Replication factor = 1 (no redundancy, not fault-tolerant)**  
+- **Supports Postgres (YSQL), Cassandra (YCQL), Redis APIs**  
+- **Minimal config – dev/test setup**  
+- **Open access (no auth/encryption)** – not secure for production  
+
+***
+
