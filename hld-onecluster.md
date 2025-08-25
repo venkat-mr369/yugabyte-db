@@ -1,6 +1,3 @@
-Got it 👍. Let me break down everything you shared into **simpler words** so you can clearly understand the database universe setup you have.
-
-***
 
 ## 📌 High-Level Overview
 You have created a **YugabyteDB Universe (cluster)**. A "universe" in YugabyteDB terms is one full deployment of the database (could be single node or multi-node).  
