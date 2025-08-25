@@ -57,11 +57,20 @@ YugabyteDB is built to provide:
 - Early versions combined distributed storage and SQL layers with mature open-source components.
 
 ### Key Milestones
-- **v1.x:** Initial release focusing on YCQL (Cassandra API) with basic distributed storage.
-- **v2.x:** Added YSQL support for strong SQL compatibility and transactions.
-- **v3.x:** Improved multi-region deployment, resilience, and maintainability.
-- **v4.x:** Enhanced cloud-native features, Kubernetes integration, and automated scaling.
-- **v2025.x:** Continued evolution targeting enterprise features, advanced observability, security, and performance optimization.
+v1.x (2017–2018):
+Initial release focusing on YCQL (Cassandra-compatible API) with basic distributed storage and replication. This period established the core distributed architecture and wide-column model support.
+
+v2.x (2018–2019):
+Added YSQL support, delivering strong SQL compatibility with full ACID transactions and PostgreSQL wire protocol support. Marked the introduction of rich relational querying in the distributed database.
+
+v3.x (2019–2021):
+Improvements to multi-region deployment capabilities, cluster resilience, failover mechanisms, and operational maintainability. Enhanced enterprise readiness with better automation and tooling.
+
+v4.x (2021–2023):
+Enhanced cloud-native features including Kubernetes integration, automated scaling, self-healing cluster operations, and improved monitoring and metrics. Strengthened support for containerized environments and cloud hybrid architectures.
+
+v2025.x (2024–Present):
+Continued evolution focused on enterprise-grade features such as advanced observability, security enhancements (encryption and authentication), performance optimization, and expanded multi-model API capabilities for diverse workloads.
 
 ### Major Features Added Over Time
 - Strong ACID transactions with distributed two-phase commit.
