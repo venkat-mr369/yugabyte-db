@@ -1,4 +1,4 @@
-YugabyteDB is a modern distributed SQL database designed to combine the best features of traditional relational 
+**YugabyteDB** is a modern distributed SQL database designed to combine the best features of traditional relational 
 databases and NoSQL systems, optimized for cloud-native applications. Here is an overview of its architecture, versions, 
 and historical notes without reference links.
 
