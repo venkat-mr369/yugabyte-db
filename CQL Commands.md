@@ -67,7 +67,7 @@ INSERT INTO employees (id, name, age, city) VALUES (3, 'Rohan', 22, 'Mumbai');
 
 ***
 
-# Notes on Cassandra Procedures, Views, Functions
+#### Notes on Cassandra Procedures, Views, Functions
 
 - Cassandra does not support **stored procedures** or **views** as in relational databases.
 - Complex logic is typically handled in application code or via lightweight transactions and batch statements.
