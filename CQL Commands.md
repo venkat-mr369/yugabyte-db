@@ -2,7 +2,7 @@
 
 ./ycqlsh 10.166.0.2 9042 -u cassandra
 
-# Sample Table and Data Inserts in CQL
+#### Sample Table and Data Inserts in CQL
 
 ```cql
 -- Create keyspace
