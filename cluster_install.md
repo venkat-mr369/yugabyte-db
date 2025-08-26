@@ -1,12 +1,18 @@
-Yes 👍 your steps are **almost correct**, but let me verify carefully and update for **3 nodes only (10.166.0.3, 10.166.0.4, 10.166.0.5)** with proper Linux user setup, installation, systemd, and verification.
+summarizes your YugabyteDB cluster’s physical and logical node distribution using the provided IPs, host names, and operating system.
 
+### Yugabyte Cluster Nodes 
 
+| **Node IP**    | **Host Name** | **OS**         | **Role**             |
+|----------------|---------------|----------------|----------------------|
+| 10.166.0.3     | VM01          | Oracle Linux   | YugabyteDB Node      |
+| 10.166.0.4     | VM02          | Oracle Linux   | YugabyteDB Node      |
+| 10.166.0.5     | VM03          | Oracle Linux   | YugabyteDB Node      |
 
----
+***
 
-# 🚀 YugabyteDB 3-Node Cluster Setup (Oracle Linux / RHEL)
+### 🚀 YugabyteDB 3-Node Cluster Setup (Oracle Linux / RHEL)
 
-## 🛠️ Step 1: Create `yugabyte` User
+#### 🛠️ Step 1: Create `yugabyte` User
 
 Login as `root` on **each server** (`10.166.0.3–5`):
 
