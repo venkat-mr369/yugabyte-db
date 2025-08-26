@@ -71,7 +71,7 @@ source ~/.bashrc
 
 ---
 
-## ⚙️ Step 4: Create Data Directories
+#### ⚙️ Step 4: Create Data Directories
 
 On **In all 3 servers**:
 
@@ -82,13 +82,13 @@ mkdir -p /home/yugabyte/yugabyte-data/tserver
 
 ---
 
-## ⚙️ Step 5: Systemd Unit Files
+#### ⚙️ Step 5: Systemd Unit Files
 
 As **root**, create the following on **all 3 servers**:
 
 ---
 
-### 📌 `/etc/systemd/system/yb-master.service`
+#### 📌 `/etc/systemd/system/yb-master.service`
 
 ```ini
 [Unit]
@@ -112,7 +112,7 @@ WantedBy=multi-user.target
 
 ---
 
-### 📌 `/etc/systemd/system/yb-tserver.service`
+#### 📌 `/etc/systemd/system/yb-tserver.service`
 
 ```ini
 [Unit]
@@ -139,7 +139,7 @@ WantedBy=multi-user.target
 
 ---
 
-## ⚙️ Step 6: Start & Enable Services
+### ⚙️ Step 6: Start & Enable Services
 
 On **each node** (`root`):
 
@@ -154,7 +154,7 @@ systemctl start yb-tserver
 
 ---
 
-## ⚙️ Step 7: Verify Cluster
+### ⚙️ Step 7: Verify Cluster
 
 ### Service check
 
@@ -163,7 +163,7 @@ systemctl status yb-master
 systemctl status yb-tserver
 ```
 
-### Cluster verification (run on any node as `yugabyte`):
+#### Cluster verification (run on any node as `yugabyte`):
 
 ```bash
 yb-admin \
@@ -175,14 +175,13 @@ yb-admin \
 
 ---
 
-## ⚙️ Step 8: Web Interfaces
+#### ⚙️ Step 8: Web Interfaces
 
 * Master UI → `http://<ip>:7000`
 * TServer UI → `http://<ip>:9000`
 
 ---
-
-# ✅ Final Layout (3-Node Cluster)
+### ✅ Final Layout (3-Node Cluster)
 
 | Node (IP)  | Roles            | Ports Used                               |
 | ---------- | ---------------- | ---------------------------------------- |
