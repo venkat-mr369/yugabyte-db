@@ -166,11 +166,9 @@ systemctl status yb-tserver
 #### Cluster verification (run on any node as `yugabyte`):
 
 ```bash
-yb-admin \
-  --master_addresses 10.166.0.3:7100,10.148.0.2:7100,10.138.0.2:7100 list_all_masters
+yb-admin --master_addresses 10.166.0.3:7100,10.148.0.2:7100,10.138.0.2:7100 list_all_masters
 
-yb-admin \
-  --master_addresses 10.166.0.3:7100,10.148.0.2:7100,10.138.0.2:7100 list_all_tablet_servers
+yb-admin --master_addresses 10.166.0.3:7100,10.148.0.2:7100,10.138.0.2:7100 list_all_tablet_servers
 ```
 
 ---
