@@ -5,8 +5,8 @@ summarizes your YugabyteDB cluster’s physical and logical node distribution us
 | **Node IP**    | **Host Name** | **OS**         | **Role**             |
 |----------------|---------------|----------------|----------------------|
 | 10.166.0.3     | VM01          | Oracle Linux   | YugabyteDB Node      |
-| 10.166.0.4     | VM02          | Oracle Linux   | YugabyteDB Node      |
-| 10.166.0.5     | VM03          | Oracle Linux   | YugabyteDB Node      |
+| 10.148.0.2     | VM02          | Oracle Linux   | YugabyteDB Node      |
+| 10.138.0.2     | VM03          | Oracle Linux   | YugabyteDB Node      |
 
 ***
 
@@ -38,26 +38,24 @@ whoami   # should return "yugabyte"
 
 ---
 
-## 🛠️ Step 2: Install Dependencies
+#### 🛠️ Step 2: Install Dependencies
 
 As `root` on all 3 nodes:
 
 ```bash
-yum install -y wget tar curl net-tools
+sudo yum install -y wget tar curl net-tools
 ```
 
 ---
 
-## 🛠️ Step 3: Download YugabyteDB (as yugabyte user)
+#### 🛠️ Step 3: Download YugabyteDB (as yugabyte user)
 
 On each server:
 
 ```bash
 su - yugabyte
-
-wget https://downloads.yugabyte.com/releases/2025.1.0.1/yugabyte-2025.1.0.1-linux.tar.gz
-tar xvf yugabyte-2025.1.0.1-linux.tar.gz
-cd yugabyte-2025.1.0.1
+wget https://software.yugabyte.com/releases/2025.1.0.1/yugabyte-2025.1.0.1-b3-linux-x86_64.tar.gz
+tar xvfz yugabyte-2025.1.0.1-b3-linux-x86_64.tar.gz && cd yugabyte-2025.1.0.1/
 ```
 
 Add to PATH:
@@ -71,7 +69,7 @@ source ~/.bashrc
 
 ## ⚙️ Step 4: Create Data Directories
 
-On **all 3 servers**:
+On **In all 3 servers**:
 
 ```bash
 mkdir -p /home/yugabyte/yugabyte-data/master
@@ -97,7 +95,7 @@ After=network.target
 User=yugabyte
 LimitNOFILE=1048576
 ExecStart=/home/yugabyte/yugabyte-2025.1.0.1/bin/yb-master \
-  --master_addresses=10.166.0.3:7100,10.166.0.4:7100,10.166.0.5:7100 \
+  --master_addresses=10.166.0.3:7100,10.148.0.2:7100,10.138.0.2:7100 \
   --rpc_bind_addresses=%H:7100 \
   --webserver_interface=%H \
   --fs_data_dirs=/home/yugabyte/yugabyte-data/master
