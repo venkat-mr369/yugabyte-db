@@ -123,7 +123,7 @@ After=network.target
 User=yugabyte
 LimitNOFILE=1048576
 ExecStart=/home/yugabyte/yugabyte-sw/bin/yb-tserver \
-  --tserver_master_addrs=10.166.0.3:7100,10.166.0.4:7100,10.166.0.5:7100 \
+  --tserver_master_addrs=10.166.0.3:7100,10.148.0.2:7100,10.138.0.2:7100 \
   --rpc_bind_addresses=%H:9100 \
   --cql_proxy_bind_address=%H:9042 \
   --pgsql_proxy_bind_address=%H:5433 \
@@ -167,10 +167,10 @@ systemctl status yb-tserver
 
 ```bash
 yb-admin \
-  --master_addresses 10.166.0.3:7100,10.166.0.4:7100,10.166.0.5:7100 list_all_masters
+  --master_addresses 10.166.0.3:7100,10.148.0.2:7100,10.138.0.2:7100 list_all_masters
 
 yb-admin \
-  --master_addresses 10.166.0.3:7100,10.166.0.4:7100,10.166.0.5:7100 list_all_tablet_servers
+  --master_addresses 10.166.0.3:7100,10.148.0.2:7100,10.138.0.2:7100 list_all_tablet_servers
 ```
 
 ---
