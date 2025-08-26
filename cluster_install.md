@@ -1,6 +1,6 @@
 Yes 👍 your steps are **almost correct**, but let me verify carefully and update for **3 nodes only (10.166.0.3, 10.166.0.4, 10.166.0.5)** with proper Linux user setup, installation, systemd, and verification.
 
-Here’s the **clean reworked version**:
+
 
 ---
 
