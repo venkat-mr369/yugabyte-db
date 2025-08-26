@@ -57,6 +57,10 @@ su - yugabyte
 wget https://software.yugabyte.com/releases/2025.1.0.1/yugabyte-2025.1.0.1-b3-linux-x86_64.tar.gz
 tar xvfz yugabyte-2025.1.0.1-b3-linux-x86_64.tar.gz && cd yugabyte-2025.1.0.1/
 ```
+```bash
+---create soft link
+ln -s yugabyte-2025.1.0.1 yugabyte-sw
+```
 
 Add to PATH:
 
@@ -94,7 +98,7 @@ After=network.target
 [Service]
 User=yugabyte
 LimitNOFILE=1048576
-ExecStart=/home/yugabyte/yugabyte-2025.1.0.1/bin/yb-master \
+ExecStart=/home/yugabyte/yugabyte-sw/bin/yb-master \
   --master_addresses=10.166.0.3:7100,10.148.0.2:7100,10.138.0.2:7100 \
   --rpc_bind_addresses=%H:7100 \
   --webserver_interface=%H \
@@ -118,7 +122,7 @@ After=network.target
 [Service]
 User=yugabyte
 LimitNOFILE=1048576
-ExecStart=/home/yugabyte/yugabyte-2025.1.0.1/bin/yb-tserver \
+ExecStart=/home/yugabyte/yugabyte-sw/bin/yb-tserver \
   --tserver_master_addrs=10.166.0.3:7100,10.166.0.4:7100,10.166.0.5:7100 \
   --rpc_bind_addresses=%H:9100 \
   --cql_proxy_bind_address=%H:9042 \
