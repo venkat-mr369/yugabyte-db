@@ -402,4 +402,4 @@ sudo systemctl restart yb-master yb-tserver
 * The flags `--placement_cloud/region/zone` help the cluster place tablets appropriately; you can also fine-tune leader placement later with `yb-admin modify_placement_info`.
 * For external client access, add separate GCP firewall rules and (optionally) bind proxies on an external interface — but prefer private/internal access.
 
-If you want this packaged as a **single copy-paste script** per node (with variables at the top), say the word and I’ll drop those too.
+
