@@ -17,6 +17,90 @@ YSQL: `5433` • YCQL: `9042` • YEDIS: `6379`
 
 Replication factor: **3** (RF=3)
 
+### Explanations about ports
+Great question 👍 — now that I see both your **OS setup** and **DB setup** scripts, I can tell you exactly which ports must be enabled between nodes (east-west traffic) and which ones can be exposed to clients (north-south traffic).
+
+---
+
+## 🔑 YugabyteDB Ports (from your `yb-master` + `yb-tserver` configs)
+
+### **Master (yb-master)**
+
+* **7100** → gRPC / RPC communication between masters (internal cluster traffic)
+* **7000** → Web UI for master (HTTP, optional external access for monitoring)
+
+### **Tablet Server (yb-tserver)**
+
+* **9100** → gRPC / RPC communication between tservers and masters (internal cluster traffic)
+* **9000** → Web UI for tserver (HTTP, optional external access for monitoring)
+
+### **Client APIs (app-facing)**
+
+* **5433** → YSQL (PostgreSQL-compatible SQL)
+* **9042** → YCQL (Cassandra-compatible)
+* **6379** → YEDIS (Redis-compatible)
+
+---
+
+## ✅ Ports to **enable between nodes** (east-west, private VPC)
+
+These must be **open between vm01, vm02, vm03** in your GCP VPC security groups/firewall:
+
+* **7100 (master RPC)**
+* **9100 (tserver RPC)**
+
+*(These are the lifeline ports — without them, masters/tservers cannot form a cluster.)*
+
+---
+
+## ✅ Ports to **allow for operators/admins** (north-south, optional external access)
+
+For DBAs and DevOps to check cluster health:
+
+* **7000 (master UI)**
+* **9000 (tserver UI)**
+
+👉 These are **optional** and should normally be limited to your VPN or trusted IPs.
+
+---
+
+## ✅ Ports to **allow for applications** (north-south, external access)
+
+For client traffic from your applications:
+
+* **5433 (YSQL / PostgreSQL wire protocol)**
+* **9042 (YCQL / Cassandra protocol)**
+* **6379 (YEDIS / Redis protocol)**
+
+👉 Open only the ones your applications actually use. For example:
+
+* If only YSQL is used → only **5433** needs to be opened.
+* YCQL and Redis ports can stay closed unless you need them.
+
+---
+
+## 🔒 Suggested GCP Firewall Rules
+
+1. **Cluster-internal communication (must-have)**
+
+   * Source: `10.166.0.0/16` (your GCP VPC subnet, adjust as needed)
+   * Ports: `7100,9100` (TCP)
+
+2. **Admin/Monitoring (optional)**
+
+   * Source: your VPN or trusted IPs
+   * Ports: `7000,9000` (TCP)
+
+3. **Application Clients (selective)**
+
+   * Source: app servers / app network
+   * Ports: whichever DB APIs you use (`5433`, `9042`, `6379`)
+---
+📌 **Summary:**
+
+* **Internal cluster (node-to-node)**: `7100`, `9100`
+* **Admin UIs**: `7000`, `9000`
+* **Client apps**: `5433`, `9042`, `6379`
 ---
 
 ### 1) GCP firewall (one-time)
